@@ -40,23 +40,23 @@ In this Lab, you will:
 
 1. Click **View Login Info**. Copy your **DB ADMIN Password**, and click the **SQL Worksheet** link.
 
-    ![Access Data Catalog](./images/start-demo.png "Access Local Data Catalog")  
+   ![Access Data Catalog](./images/start-demo.png "Access Local Data Catalog")  
 
 2. For your Username enter **LOAN**. Paste in the password you copied in the previous step.
 
-    ![Access Local Data Catalog](./images/sql-sign-in.png "Access Local Data Catalog")  
+   ![Access Local Data Catalog](./images/sql-sign-in.png "Access Local Data Catalog")  
 
 3. From the top menu, select **Data Studio**, then click **Data Share** from the left rail.
 
-      ![Create Data Product Share](./images/select-data-share.png "Create Data Product Share")
+   ![Create Data Product Share](./images/select-data-share.png "Create Data Product Share")
 
 4. On the **Provider and Consumer** page, click **Provide Share**.
 
-      ![Create Data Product Share](./images/select-provider-share.png "Create Data Product Share")
+   ![Create Data Product Share](./images/select-provider-share.png "Create Data Product Share")
 
 5. Click **Provider Identification**.
 
-      ![Define a Data Product Recipient](./images/set-provider-id.png "Define a Data Product Recipient")
+   ![Define a Data Product Recipient](./images/set-provider-id.png "Define a Data Product Recipient")
 
 6.	In the **Provider Identification** popup, enter the following:
 
@@ -94,7 +94,7 @@ In this Lab, you will:
       *  Select the **Share\_Loan\_Data\_Risk\_VW** table in the **Available Tables** column.
       *  Click the **move (>)** button to add it to the **Shared Tables** column
 
-   ![Define a Data Product Recipient](./images/select-items-for-share.png "Define a Data Product Recipient")
+      ![Define a Data Product Recipient](./images/select-items-for-share.png "Define a Data Product Recipient")
 
       *  Click **Next**.
 
@@ -122,7 +122,7 @@ In this Lab, you will:
 
       * Click **Create**.
   
-15. Now, publish your share by clicking the **Publish** button from the options menu 
+15. Now, publish your share by clicking the **Publish** button from the options menu.
 
    ![publish Data Product ](./images/publishshare.png "")
 
@@ -130,10 +130,9 @@ In this Lab, you will:
 
    ![created Data Product ](./images/sharecreated.png "")
 
-17. Paste the activation link you copied earlier into your browser and click **Get Profile Information** to download the recipient profile file.
+17. Paste the activation link you copied earlier into your browser and click **Get Profile Information** to download the recipient profile file (The default name is `delta_share_profile.json`).
 
-   ![Data Product Recipient](./images/paste-activation-link-in-window.png "")
-
+   ![Data Product activation link](./images/Paste-activation-link-in-window.png "")
 
 You’ve just **created and published a data product share**—making curated loan data securely available to the Risk team. By defining the share, selecting the right data, and authorizing a recipient, you’ve set up a **governed, reusable pipeline for cross-team collaboration**.
 
