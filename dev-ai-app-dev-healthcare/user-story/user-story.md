@@ -99,7 +99,7 @@ In this first example, you will use the application to approve a patient with a 
 
     ![Return to Dashboard](./images/amelie-return-dashboard.png =50%x*)
 
-12. Expand **View Approved Patients**. We can see that James Smith has been removed from the Pending Prior Authorization Requests list and has been added to the Approved Authorization Requests list.
+12. Expand **View Approved Patients**. We can see that Amelie Shepherd has been removed from the Pending Patients list and has been added to the Approved Patients list.
 
     ![Amelie Shepherd Approved List](./images/amelie-approved-list.png =50%x*)
 
@@ -139,17 +139,6 @@ In this example, you will navigate the application to review a customer and requ
     ![Izzie-Stevens Decision](./images/izzie-stevens-decision.png =50%x*)
 
 >⁉️ **What are two reasons that the AI needs more information from this applicant?** ⁉️
-
-
-4. Expand **View Dot Plot: Diagnosis-Policy Relationships** to view the graph.
-
-    ![Izzie Stevens Graph](./images/expand-graph.png =50%x*)
-
-    On the decision page, the healthcare claim reviewer can use **Operational Property Graph** to explore near-approval authorization scenarios. Built with **Oracle Graph**, this feature visually maps authorizations just out of reach and highlights what adjustments—like adding missing codes or re-evaluation could improve eligibility.
-
-    ![James Woods Graph](./images/james-woods-graph2.png =50%x*)
-
->💡 In Oracle Database 23ai, **Property Graph** allows you to treat your data like a network of connected points, where each point (called a node) and each link (called an edge) has its own details or properties. This setup helps you run graph analytics, like to find important connections or patterns, directly within the database.
 
 5. The authorization status is set to **Request Info**. Click the **Confirm Decision** button.
 
@@ -222,7 +211,7 @@ In conclusion our Prior Authorizations Management App was able to leverage Oracl
 ✅ And empower healthcare claim reviewers  with actionable insights through Operational Property Graphs 
 
 By combining these advanced tools, the application enables faster, smarter decisions and delivers clear guidance on how patients can improve their eligibility.
- 
+
 **Next:** How about learning how the application was implemented in Python? Continue with the next labs and start developing!
 
 ## Learn More
