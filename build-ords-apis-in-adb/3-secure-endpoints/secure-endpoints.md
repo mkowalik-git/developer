@@ -14,69 +14,76 @@ Estimated Lab Time: 10 minutes
 
 ### Prerequisites
 
-- The following lab requires an [Oracle Cloud account](https://www.oracle.com/cloud/free/). You may use your own cloud account, a cloud account that you obtained through a trial, or a training account whose details were given to you by an Oracle instructor.
+<if type="tenancy">
+- The following lab requires an [Oracle Cloud account](https://www.oracle.com/cloud/free/). You may use your own cloud account, a cloud account obtained through a trial, or a training account whose details were given to you by an Oracle instructor.
+</if>
 - This lab uses the command line application cURL for testing APIs; some familiarity is suggested.
 - This lab assumes you have completed all previous Labs. 
 
-## Task 1: Create a Role for an OAuth2.0 client
+## Task 1: Create a Role
 
 1. From the REST Workshop, select **Roles** from the **Security** dropdown menu.
 
-    ![Roles from the security menu](./images-new/1-roles-from-security-menu.png " ")
+    ![Roles from the security menu](./images/1-roles-from-security-menu.png " ")
 
 2. Next, click the **+ Create Role** button.
 
-    ![click create role button](./images-new/2-create-role-button.png " ")
+    ![click create role button](./images/2-create-role-button.png " ")
 
 3. In the Role Definition modal, enter in a **Role Name**, such as: `my.test.role`, then click **Create**.
 
-    ![The role definition modal](./images-new/3-role-definition-modal.png " ")
+    ![The role definition modal](./images/3-role-definition-modal.png " ")
 
-## Task 2: Create a Privilege for an OAuth2.0 client
+## Task 2: Create a Privilege
 
-1. Next, you'll create a Privilege for the OAuth2.0 client. Select **Privileges** from the **Security** dropdown menu. 
+1. Next, you'll create a Privilege. Select **Privileges** from the **Security** dropdown menu. 
 
-    ![Selecting privileges from security menu](./images-new/4-select-privileges-option.png " ")
+    ![Selecting privileges from security menu](./images/4-select-privileges-option.png " ")
 
 2. Click the **+ Create Privilege** button, and enter in values for this privilege. 
 
-   ![Create privilege button](./images-new/5-create-privilege-button.png " ")
+    ![Create privilege button](./images/5-create-privilege-button.png " ")
 
-   To better follow along, choose values similar to the examples: 
+    To better follow along, choose values similar to the examples: 
 
-    **Privilege Definition**
+    For **Privilege Definition** choose:
+
     - **Label:** `my.test.priv`
     - **Name:** `my.test.priv`
     - **Description:** `my.test.priv` (You can alter this as needed)
     - **Comments:** optional 
 
-     ![create-priv-priv-definition](./images-new/6-create-priv-priv-definition.png " ")
+       ![create-priv-priv-definition](./images/6-create-priv-priv-definition.png " ")
 
-    **Roles**
-    - **Roles:** `my.test.role` (or your unique role, if it differs)
+3. Click the **Roles** tab, and use the following:
+    
+    - Move the `my.test.role` (i.e., the role you created in Task 1 of this Lab) from the **Available Roles** column to the **Selected Roles** column.
 
-       ![create-priv-roles](./images-new/7-create-priv-roles.png " ")
+        ![create-priv-roles](./images/7-create-priv-roles.png " ")
 
-    **Protected Modules**
-    - **Selected Modules**: `records.module`
+4. Click the **Protected Modules** tab and move `records.module` from the **Available Modules** column to the **Selected Modules** column.
 
-      ![create-priv-selected-modules](./images-new/8-create-priv-protected-modules.png " ")
+    ![create-priv-selected-modules](./images/8-create-priv-protected-modules.png " ")
 
-    > **TIP:** Move a Module into the Selected Modules column by dragging, or using the arrow buttons.
+       > **TIP:** Move a Module into the Selected Modules column by dragging, or using the arrow buttons.
 
-3. Once complete, click the **Create** button.
+3. Once complete, click the **Create** button. 
+
+4. Your `records.module` is now protected by the `my.test.priv` and the `my.test.role`. 
+
+5. In the next task, you will create an OAuth client.
 
 ## Task 3: Create an ORDS OAuth Client
 
 1. Select **OAuth Clients** from the **Security Tab**.
 
-    ![selecting OAuth Clients](./images-new/9-oauth-clients-menu.png " ")
+    ![selecting OAuth Clients](./images/9-oauth-clients-menu.png " ")
 
 2. Then, click the **+ Create OAuth Client** button.
 
-    ![Click the Create OAuth Client button](./images-new/10-create-oauth-client-button.png " ")
+    ![Click the Create OAuth Client button](./images/10-create-oauth-client-button.png " ")
 
-3. In the Create OAuth Client slider, enter in the following values and click the **Create** button when complete:
+3. In the Create OAuth Client slider, enter in the following values:
 
     **Client Definition**
     - **Grant type:** `CLIENT_CRED`
@@ -85,70 +92,77 @@ Estimated Lab Time: 10 minutes
     - **Support email:** your choice (mandatory field)
     - **Support URI:** https://www.my-company.com/support (can be fictitious)
 
-     ![Description Field](./images-new/11-create-oauth-client-definition.png " ")
+     ![Description Field](./images/11-create-oauth-client-definition.png " ")
 
-    **Roles**
-    - **Roles:** `my.test.role` (or your unique role, if it differs)
+4. Click the **Roles** tab, and select the previously created role: `my.test.role` (or your unique role, if it differs).
 
-       ![choose-roles-tB](./images-new/12-create-oauth-client-roles.png " ")
+    ![choose-roles-tB](./images/12-create-oauth-client-roles.png " ")
 
-    **Privileges**
-    - **Roles:** `my.test.role` (or your unique role, if it differs)
+5. Next, select the **Privileges** tab. Choose the privilege: `my.test.priv` (or your unique privilege, if it differs).
 
-       ![choose-ouath-privs](./images-new/13-create-oauth-client-privs.png " ")
+    ![choose-ouath-privs](./images/13-create-oauth-client-privs.png " ")
 
-## Task 4: Testing the OAuth2.0 client
+5. Finally, click the **Create** button when complete. 
 
-1. After clicking **Create**, a Client Secret modal will appear. Copy the Secrect Client value to your clipboard or a text editor. 
+6. After clicking **Create**, a Client Secret modal will appear. Copy the Secret Client value to your clipboard or a text editor. 
 
-     > **NOTE:** If you click OK prior to copying, you can also Rotate in a new Client Secret value.
+    ![Copy my client secret](./images/14-my-oauth-client-secret.png " ")
 
-     ![Copy my client secret](./images-new/14-my-oauth-client-secret.png " ")
+    > **NOTE:** If you click OK prior to copying, you can also Rotate in a new Client Secret value.
 
-     ![Rotate in new secret](./images-new/15-mistake-rotate-secret.png " ")
+    > ![Rotate in new secret](./images/15-mistake-rotate-secret.png " ")
 
-2. You will also next need to copy your Client ID.
+## Task 4: Testing the OAuth  protected resource
 
-    ![Client ID value](./images-new/16-copy-client-id-value.png " ")
+1. You will first request an Access token from the ORDS OAuth2.0 `/token` endpoint. The simpliest way to retrive this endpoint, along with a fully-formed curl command, is by clicking the OAuth client's kebab menu, then selecting the **Get Bearer Token** menu option. 
 
-3. You will first request an Access token from the ORDS OAuth2.0 `/token` endpoint. The Token endpoint is located at the following URL, where `server.com` is the location of your database server (this example assumes your schema is also `ords101`):
+    ![select-get-bearer-token](./images/16-select-get-bearer-token.png " ")
 
-    ```http
-    <copy>https://[MY ADB's OCI]-[My ADB Name].adb.[My-Region].oraclecloudapps.com/ords/ords101/oauth/token</copy>
-    ```
+2. Next, paste your Client Secret value into the text field and click **Get New Token**. A new token will appear, along with a now complete cURL command. *Select the appropriate shell (i.e., Command Prompt, PowerShell, or Bash)* and copy the complete command.
 
-    Your cURL command for retrieving an Access Token should resemble the following (where the `--user` value is your `Client_ID`:`Client_Secret`):
+    ![clicking-get-new-token-to-produce-complete-oauth-curl-command](./images/clicking-get-new-token-to-produce-complete-oauth-curl-command.png " ")
 
-    ```shell
-    <copy>curl \
-    --user AbcDef3456XYz..:a45AbcdeF8675309abcd.. \
-    --data 'grant_type=client_credentials' \
-    'https://abcdefgh12345-ords101db.adb.us-ashburn-1.oraclecloudapps.com/ords/ords101/oauth/token'</copy>
-    ```
+    ![copying-the-new-bearer-token](./images/copying-the-new-bearer-token.png " ")
 
-    ![Obtaining-the-bearer-token-part-one](./images-new/17-obtaining-the-bearer-token-part-one.png " ")
+3. Paste the curl command into your terminal and execute the cURL command. You will receive a valid Access Token. 
 
-4. Execute your cURL command; you will recieve a valid Access Token. In this example, you can use the `GET` endpoint that you created in **Lab 2, Task 3: Building an ORDS GET API** as your target endpoint.
+    ![curl-command-in-terminal-to-retrieve-valid-token](./images/curl-command-in-terminal-to-retrieve-valid-token.png " ")
 
-    ![Obtaining-the-bearer-token-part-two](./images-new/18-obtaining-the-bearer-token-part-two.png " ")
+4. In this example, you can use the `GET` endpoint that you created in **Lab 2, Task 3: Building an ORDS GET API** as your target endpoint.
 
-5. Before proceeding, attempt a GET request on your GET Handler, it will fail as you have not provided a valid Access Token (Unauthorized).
+    <details><summary>Steps for retrieving the `GET` URI.</summary>
 
-    ![An unauthorized get request](./images-new/19-unauthorized-request.png " ")
+    1. Navigate back to the Modules page.
 
-6. Finally, with a valid Access Token, perform a GET request on your target endpoint, using the following cURL command as an example: 
+        ![navigating-back-to-module-page](./images/navigating-back-to-module-page.png " ")
 
-    ```shell
-    <copy>curl --location \
-    --header 'Authorization: Bearer [Your valid Access Token]' \
-    'https://abcdefgh12345-ords101db.adb.us-ashburn-1.oraclecloudapps.com/ords/ords101/v1/dept_active/10/true'</copy>
-    ```
+    2. Click on your Resource Module.
 
-    ![An authorized get request](./images-new/20-authorized-request.png " ")
+        ![clicking-the-module-to-view-template](./images/clicking-the-module-to-view-template.png " ")
 
-7. What you should see is the successful response from your `/ords101/v1/dept_active/` endpoint. Congratulations, you've just completed the ORDS 101 Workshop!
+    3. Click the kebab menu of the `:dept_id/:is_active?` Template.
 
-8. In this lab, you secured your custom REST APIs with OAuth2 authentication.
+        ![clicking-kebab-on-handler-to-reveal-curl-command-option](./images/clicking-kebab-on-handler-to-reveal-curl-command-option.png " ")
+
+    4. Enter in a value for `dept_id`, select the proper terminal for your OS, then copy the command.
+
+        ![entering-in-substitution-value-for-curl-command](./images/entering-in-substitution-value-for-curl-command.png " ")
+
+    </details>
+
+5. In a text editor, add in the Bearer Token you obtained in the previous step for the `Bearer` value. Example: `--header 'Authorization: Bearer [Token Value]'`. Next, remove the `<VALUE>?` placeholder. Copy this new cUrl command.
+
+    ![before-and-after-complete-curl-with-new-bearer-token](./images/before-and-after-complete-curl-with-new-bearer-token.png " ")
+
+6. Paste the new cURL command into a Terminal session, press enter. With a valid Access Tokeny you can now perform a `GET` request on your target endpoint.
+
+    ![response-from-curl-command-from-protected-resource](./images/response-from-curl-command-from-protected-resource.png " ")
+
+12. What you should see is the successful response from your `/ords101/v1/dept_active/:is_active?` endpoint. If you remove the `--header 'Authorization: Bearer [Token Value]'` from a curl command and try again, you'll notice how the request is unauthorized.
+
+    ![unauthorized-curl-command](./images/unauthorized-curl-command.png " ")
+
+13. In this lab, you secured your custom REST APIs with OAuth2 authentication. Congratulations, you've just completed the ORDS 101 Workshop!
 
 You may now [proceed to the next lab](#next).
 
@@ -157,8 +171,8 @@ You may now [proceed to the next lab](#next).
 ### Author
 
 - Jeff Smith, Distinguished Product Manager
-- Chris Hoina, Senior Product Manager
+- Chris Hoina, Lead Principal Product Manager
 
 ### Last Updated By/Date
 
-- Chris Hoina, September 2025
+- Chris Hoina, October 2026

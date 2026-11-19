@@ -2,310 +2,464 @@
 
 ## Introduction
 
-In this lab, you will, as the Admin, create a new database developer user to be used for the remainder of this workshop. Your new user will automatically be REST-enabled. This means the new user will also be able to log into Database Actions as well as have the ability to REST-enable their database objects. 
+In this lab you will create a new database developer user to use for the remainder of this workshop. You'll used this REST-enabled user to log into Database Actions as well as have the ability to REST-enable their own database objects. 
 
-You'll build out your schema with database objects, and AutoREST-enable a table in your Autonomous Database. Finally, you'll test the endpoint using the cURL command line tool 
+You'll build out your schema with database objects, and AutoREST-enable a table in your Autonomous AI Database. Finally, you'll test the endpoint using the cURL command line tool 
 
 Estimated Lab Time: 20 minutes
 
 ### Objectives
 
-- Create a new REST-enabled DB Developer user
-- Create for the new user tables and various database objects 
+- Create a new REST-enabled Developer user
+- Create tables and other database objects for this REST user
 - REST-enable a table for this new user
 
 ### Prerequisites
-
+<if type="tenancy">
 - The following lab requires an [Oracle Cloud account](https://www.oracle.com/cloud/free/). You may use your own cloud account, a cloud account obtained through a trial, or a training account whose details were given to you by an Oracle instructor.
+</if>
 - This lab uses the command line application cURL for testing APIs; some familiarity is suggested.
 - This lab assumes you have completed all previous Labs.
 
 ## Task 1: Create a new REST-enabled database user
 
-1. You should still be logged in as the ADMIN user, if not, sign back in as the ADMIN and select the Administration tab from the LaunchPad. Then select the Database Users menu option. 
+<if type="sandbox">
 
-  ![Logged in as the Admin user](./images-new/1-launchpad-as-admin.png " ")
+1. Click **View Login Info**.
 
-  ![Navigate to Database Users](./images-new/2-navigate-to-administration-db-users.png " ")
+    ![Clicking the View Login Info link](./images/click-view-login-info.png " ")
+
+2. The Reservation Information slider will appear. Locate the DB ADMIN Password; copy it. 
+
+    ![Locating the Reservation Information Tab](./images/reservation-information-tab.png " " )
+
+3. Open the SQL Worksheet link in a new tab. Login to Database Actions as the ADMIN user.
+
+    ![entering-in-admin-info-in-landing-page](./images/entering-in-admin-info-in-landing-page.png " ")
+
+</if>
+
+1. Complete or cancel the UI Tour. Select the Administration tab from the LaunchPad. Then select the **Database Users** menu option. 
+
+    ![Logged in as the Admin user](./images/1-launchpad-as-admin.png " ")
+
+    ![Navigate to Database Users](./images/2-navigate-to-administration-db-users.png " ")
 
 2. From the User Management dashboard, select the **Create User** button. 
 
-  ![Create new user button](./images-new/3-create-new-user.png " ")
+    ![Create new user button](./images/3-create-new-user.png " ")
 
-3. A Create User dialogu will appear. Use the name `ORDS101`, choose a password that conforms to Oracle database password requirements.
+3. A Create User dialogue will appear. Choose a username and password that conforms to Oracle Autonomous AI database [password requirements](https://docs.oracle.com/en/cloud/paas/autonomous-database/serverless/adbsb/manage-users-create.html#GUID-72DFAF2A-C4C3-4FAC-A75B-846CC6EDBA3F).
 
-  ![Above the fold, create user info](./images-new/4-create-new-user-dialogue.png " ")
+    ![Above the fold, create user info](./images/4-create-new-user-dialogue.png " ")
 
-4. Use the Radio button to enable **REST, GraphQL, MongoDB API, and Web access**. The REST Alias should remain unchanged. 
+4. You may choose **UNLIMITED** for the Quote on tablespace DATA field. Use the Radio button to enable **REST, GraphQL, MongoDB API, and Web access**. Leave **REST Alias** unchanged. 
 
-5. The ORDS101 user will automatically be granted the `CONNECT` and `RESOURCE` roles. However, you can manually enable the new 23ai `DB_DEVELOPER_ROLE`, as this is an easy way to ensure a Developer user has many of the required roles aimed at the Oracle database developer user. Once complete, click the Create User button.
+5. The user will automatically be granted the `CONNECT` and `RESOURCE` roles. You will add the `DB_DEVELOPER_ROLE` and `DWROLE` roles as well.
 
-  ![Toggling the web access button](./images-new/5-toggle-web-access-button.png " ")
+6. Click the **Granted Roles**. Then search for and select the `DB_DEVELOPER_ROLE` and `DWROLE` (or whichever exists) roles.Ensure the `Default` field has been "checked" for both.
 
-  ![Manually selecting the db_developer_role role](./images-new/6-add-db-developer-role-click-create-user.png " ")
+    ![Manually selecting the db_developer_role role](./images/6-add-db-developer-role-click-create-user.png " ")
 
-## Task 2: Sign-in as the ORDS101 user
+7. Once complete, click the **Create User** button.
 
-1. After creating the ORDS101 user, you will be redirected back to the User Management dashboard. There you'll see a new card that includes the unique URL for the ORDS101 user. Click the icon to open the URL in a new tab. 
+   ![Toggling the web access button](./images/5-toggle-web-access-button.png " ")
 
-  ![Linking out to ords101 users launchpad](./images-new/7-link-for-new-db-user.png " ")
+## Task 2: Sign-in as new user
 
-2. Sign-in with the ORDS101 credentials. 
+1. From the User Management dashboard, you'll see a new card that includes the unique URL for the user. Click the Open in New Tab icon to open the URL in a new tab.
 
-  ![Linking out to ords101 users launchpad](./images-new/8-login-as-new-dev-user.png " ")
+    ![Linking out to ords101 users launchpad](./images/7-link-for-new-db-user.png " ")
+
+2. If prompted, sign-in with the user's credentials. 
+
+    ![Linking out to ords101 users launchpad](./images/8-login-as-new-dev-user.png " ")
 
 3. From the Database Actions LaunchPad, click the Development tab, followed by the SQL menu option. 
 
-  ![Selecting sql from the launchpad](./images-new/9-launchpad-for-new-ords-user.png " ")
+    ![Selecting sql from the launchpad](./images/9-launchpad-for-new-ords-user.png " ")
 
     > **NOTE:** You will use this developer user for the remainder of the labs in this workshop.
 
 4. You should now see the SQL Worksheet. If you are prompted for a Tour, you can proceed through the helpful tips, or exit the tour. Next, you'll populate your brand new schema with database objects.
 
-  ![Selecting sql from the launchpad](./images-new/10-new-sql-worksheet-screen.png " ")
+   ![Selecting sql from the launchpad](./images/10-new-sql-worksheet-screen.png " ")
 
 ## Task 3: Populate the schema
 
-1. Next you'll populate your schema with the included code snippet. Copy the contents of the snippet and paste it into the SQL Worksheet code playground, then click the **Run Script** icon to execute the script.
+1. Next, populate your schema with the included code snippet. Copy the contents of the snippet and paste it into the SQL Worksheet code playground, then click the **Run Script** icon to execute the script. (Expand the **SQL Script** details element below)
 
-   ![Clicking execute script button](./images-new/11-build-out-schema.png " ")
-
-   <details>
-     <summary style="color: #0000FF";><kbd style="font-size: 10px;">(click) </kbd><strong>Sample prompt</strong></summary>
-     <p></p>
+    <details>
+        <summary><strong>SQL Script</strong></summary>
+        <p></p>
 
     ```sql
-    <copy>-- ==========================================
-    -- CREATE TABLES
+    <copy>
     -- ==========================================
-
-    -- DEPARTMENT table
-
-    CREATE TABLE DEPARTMENT (
-      DEPT_ID    NUMBER GENERATED BY DEFAULT AS IDENTITY
-                CONSTRAINT DEPT_ID_PK PRIMARY KEY,
-      DEPT_CODE  VARCHAR2(5) CONSTRAINT DEPT_CODE_NN NOT NULL,
-      ESTABLISHED DATE,
-      DETAILS    JSON
+    -- CREATE DEPARTMENT TABLE
+    -- Source: create_department_table.sql
+    -- ==========================================
+    CREATE TABLE "DEPARTMENT" 
+    (    "DEPT_ID" NUMBER GENERATED BY DEFAULT AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE , 
+    "DEPT_CODE" VARCHAR2(5 BYTE), 
+    "ESTABLISHED" DATE, 
+    "DETAILS" JSON
     );
 
-    CREATE UNIQUE INDEX DEPT_CODE_UK ON DEPARTMENT (DEPT_CODE);
+    CREATE UNIQUE INDEX "DEPT_CODE_UK" ON "DEPARTMENT" ("DEPT_CODE") 
+    ;
 
-    -- EMPLOYEE table
+    CREATE UNIQUE INDEX "DEPT_ID_PK" ON "DEPARTMENT" ("DEPT_ID") 
+    ;
 
-    CREATE TABLE EMPLOYEE (
-      EMP_ID     NUMBER GENERATED BY DEFAULT AS IDENTITY
-                CONSTRAINT EMP_ID_PK PRIMARY KEY,
-      EMP_NAME   VARCHAR2(100) CONSTRAINT EMP_NAME_NN NOT NULL,
-      DEPT_ID    NUMBER CONSTRAINT EMP_DEPT_ID_NN NOT NULL,
-      COMMENTS   CLOB,
-      CONSTRAINT FK_EMPLOYEE_DEPT FOREIGN KEY (DEPT_ID)
-        REFERENCES DEPARTMENT (DEPT_ID)
+    CREATE UNIQUE INDEX "DEPARTMENT_DEPT_CODE_UQ" ON "DEPARTMENT" (UPPER("DEPT_CODE")) 
+    ;
+
+    ALTER TABLE "DEPARTMENT" MODIFY ("DEPT_ID" NOT NULL ENABLE);
+
+    ALTER TABLE "DEPARTMENT" MODIFY ("DEPT_CODE" CONSTRAINT "DEPT_CODE_NN" NOT NULL ENABLE);
+
+    ALTER TABLE "DEPARTMENT" ADD CONSTRAINT "DEPT_ID_PK" PRIMARY KEY ("DEPT_ID")
+    USING INDEX  ENABLE;
+
+
+    -- ==========================================
+    -- CREATE EMPLOYEE TABLE
+    -- Source: create_employee_table.sql
+    -- ==========================================
+    CREATE TABLE "EMPLOYEE" 
+    (    "EMP_ID" NUMBER GENERATED BY DEFAULT AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE , 
+    "EMP_NAME" VARCHAR2(100 BYTE), 
+    "DEPT_ID" NUMBER, 
+    "COMMENTS" CLOB
     );
 
-    CREATE INDEX EMP_DEPARTMENT_IX ON EMPLOYEE (DEPT_ID);
+    CREATE UNIQUE INDEX "EMP_ID_PK" ON "EMPLOYEE" ("EMP_ID") 
+    ;
 
-    -- PROJECT table
+    CREATE INDEX "EMP_DEPARTMENT_IX" ON "EMPLOYEE" ("DEPT_ID") 
+    ;
 
-    CREATE TABLE PROJECT (
-      PROJ_ID    NUMBER GENERATED BY DEFAULT AS IDENTITY
-                CONSTRAINT PROJ_ID_PK PRIMARY KEY,
-      PROJ_NAME  VARCHAR2(100) CONSTRAINT PROJ_NAME_NN NOT NULL,
-      DEPT_ID    NUMBER CONSTRAINT PROJ_DEPT_ID_NN NOT NULL,
-      IS_ACTIVE  BOOLEAN,
-      CONSTRAINT FK_PROJECT_DEPT FOREIGN KEY (DEPT_ID)
-        REFERENCES DEPARTMENT (DEPT_ID)
+    ALTER TABLE "EMPLOYEE" MODIFY ("EMP_ID" NOT NULL ENABLE);
+
+    ALTER TABLE "EMPLOYEE" MODIFY ("EMP_NAME" CONSTRAINT "EMP_NAME_NN" NOT NULL ENABLE);
+
+    ALTER TABLE "EMPLOYEE" MODIFY ("DEPT_ID" CONSTRAINT "EMP_DEPT_ID_NN" NOT NULL ENABLE);
+
+    ALTER TABLE "EMPLOYEE" ADD CONSTRAINT "EMP_ID_PK" PRIMARY KEY ("EMP_ID")
+    USING INDEX  ENABLE;
+
+    ALTER TABLE "EMPLOYEE" ADD CONSTRAINT "FK_EMPLOYEE_DEPT" FOREIGN KEY ("DEPT_ID")
+        REFERENCES "DEPARTMENT" ("DEPT_ID") ENABLE;
+
+
+    -- ==========================================
+    -- CREATE PROJECT TABLE
+    -- Source: create_project_table.sql
+    -- ==========================================
+    CREATE TABLE "PROJECT" 
+    (    "PROJ_ID" NUMBER GENERATED BY DEFAULT AS IDENTITY MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 1 CACHE 20 NOORDER  NOCYCLE  NOKEEP  NOSCALE , 
+    "PROJ_NAME" VARCHAR2(100 BYTE), 
+    "DEPT_ID" NUMBER, 
+    "IS_ACTIVE" BOOLEAN
     );
 
-    CREATE INDEX PROJ_DEPARTMENT_IX ON PROJECT (DEPT_ID);
+    CREATE UNIQUE INDEX "PROJ_ID_PK" ON "PROJECT" ("PROJ_ID") 
+    ;
+
+    CREATE INDEX "PROJ_DEPARTMENT_IX" ON "PROJECT" ("DEPT_ID") 
+    ;
+
+    ALTER TABLE "PROJECT" MODIFY ("PROJ_ID" NOT NULL ENABLE);
+
+    ALTER TABLE "PROJECT" MODIFY ("PROJ_NAME" CONSTRAINT "PROJ_NAME_NN" NOT NULL ENABLE);
+
+    ALTER TABLE "PROJECT" MODIFY ("DEPT_ID" CONSTRAINT "PROJ_DEPT_ID_NN" NOT NULL ENABLE);
+
+    ALTER TABLE "PROJECT" ADD CONSTRAINT "PROJ_ID_PK" PRIMARY KEY ("PROJ_ID")
+    USING INDEX  ENABLE;
+
+    ALTER TABLE "PROJECT" ADD CONSTRAINT "FK_PROJECT_DEPT" FOREIGN KEY ("DEPT_ID")
+        REFERENCES "DEPARTMENT" ("DEPT_ID") ENABLE;
 
     -- ==========================================
     -- INSERT DATA
+    -- Source: insert_data.sql
     -- ==========================================
     INSERT INTO DEPARTMENT (DEPT_CODE, ESTABLISHED, DETAILS) VALUES
-      ('HR001', DATE '2001-04-13', JSON_OBJECT('location' VALUE 'Bldg 1', 'members' VALUE 25)),
-      ('FN002', DATE '2002-06-20', JSON_OBJECT('location' VALUE 'Bldg 2', 'members' VALUE 20)),
-      ('EN003', DATE '2000-11-01', JSON_OBJECT('location' VALUE 'Bldg 3', 'members' VALUE 40)),
-      ('SA004', DATE '2005-01-15', JSON_OBJECT('location' VALUE 'Bldg 4', 'members' VALUE 18)),
-      ('MK005', DATE '2003-12-07', JSON_OBJECT('location' VALUE 'Bldg 5', 'members' VALUE 15)),
-      ('LG006', DATE '2010-03-31', JSON_OBJECT('location' VALUE 'Bldg 6', 'members' VALUE 5)),
-      ('IT007', DATE '2001-09-23', JSON_OBJECT('location' VALUE 'Bldg 7', 'members' VALUE 30)),
-      ('SP008', DATE '2015-05-05', JSON_OBJECT('location' VALUE 'Bldg 8', 'members' VALUE 12)),
-      ('LG009', DATE '2012-07-14', JSON_OBJECT('location' VALUE 'Bldg 9', 'members' VALUE 10)),
-      ('OP010', DATE '2008-08-01', JSON_OBJECT('location' VALUE 'Bldg 10', 'members' VALUE 22));
+        ('HR001', DATE '2001-04-13', JSON_OBJECT('location' VALUE 'Bldg 1', 'members' VALUE 25)),
+        ('FN002', DATE '2002-06-20', JSON_OBJECT('location' VALUE 'Bldg 2', 'members' VALUE 20)),
+        ('EN003', DATE '2000-11-01', JSON_OBJECT('location' VALUE 'Bldg 3', 'members' VALUE 40)),
+        ('SA004', DATE '2005-01-15', JSON_OBJECT('location' VALUE 'Bldg 4', 'members' VALUE 18)),
+        ('MK005', DATE '2003-12-07', JSON_OBJECT('location' VALUE 'Bldg 5', 'members' VALUE 15)),
+        ('LG006', DATE '2010-03-31', JSON_OBJECT('location' VALUE 'Bldg 6', 'members' VALUE 5)),
+        ('IT007', DATE '2001-09-23', JSON_OBJECT('location' VALUE 'Bldg 7', 'members' VALUE 30)),
+        ('SP008', DATE '2015-05-05', JSON_OBJECT('location' VALUE 'Bldg 8', 'members' VALUE 12)),
+        ('LG009', DATE '2012-07-14', JSON_OBJECT('location' VALUE 'Bldg 9', 'members' VALUE 10)),
+        ('OP010', DATE '2008-08-01', JSON_OBJECT('location' VALUE 'Bldg 10', 'members' VALUE 22));
+        COMMIT;
 
     INSERT INTO PROJECT (PROJ_NAME, DEPT_ID, IS_ACTIVE) VALUES
-      ('Onboarding', 1, TRUE),
-      ('Audit2024', 2, FALSE),
-      ('NewApp', 3, TRUE),
-      ('SalesCampaign', 4, TRUE),
-      ('SocialMediaPush', 5, FALSE),
-      ('Compliance', 6, TRUE),
-      ('UpgradeInfra', 7, TRUE),
-      ('HelpdeskRevamp', 8, TRUE),
-      ('FleetUpdate', 9, TRUE),
-      ('ProcessReorg', 10, FALSE);
+        ('Onboarding', 1, TRUE),
+        ('Audit2024', 2, FALSE),
+        ('NewApp', 3, TRUE),
+        ('SalesCampaign', 4, TRUE),
+        ('SocialMediaPush', 5, FALSE),
+        ('Compliance', 6, TRUE),
+        ('UpgradeInfra', 7, TRUE),
+        ('HelpdeskRevamp', 8, TRUE),
+        ('FleetUpdate', 9, TRUE),
+        ('ProcessReorg', 10, FALSE);
+        COMMIT;
 
     INSERT INTO EMPLOYEE (EMP_NAME, DEPT_ID, COMMENTS) VALUES
-      ('Alice', 1,  'Strong analyst, quick learner.'),
-      ('Bob', 2,  'CPA certification in progress.'),
-      ('Carol', 3,  'Dev team lead for NewApp project.'),
-      ('David', 4,  'Consistent sales over target.'),
-      ('Eve', 5,  'Leads digital campaigns.'),
-      ('Frank', 6,  'Subject matter expert in compliance.'),
-      ('Grace', 7,  'Skilled in infrastructure upgrades.'),
-      ('Heidi', 8,  'Customer support supervisor.'),
-      ('Ivan', 9,  'Fleet manager - long tenure.'),
-      ('Judy', 10,  'Operations management veteran.');
+        ('Alice', 1,  'Strong analyst, quick learner.'),
+        ('Bob', 2,  'CPA certification in progress.'),
+        ('Carol', 3,  'Dev team lead for NewApp project.'),
+        ('David', 4,  'Consistent sales over target.'),
+        ('Eve', 5,  'Leads digital campaigns.'),
+        ('Frank', 6,  'Subject matter expert in compliance.'),
+        ('Grace', 7,  'Skilled in infrastructure upgrades.'),
+        ('Heidi', 8,  'Customer support supervisor.'),
+        ('Ivan', 9,  'Fleet manager - long tenure.'),
+        ('Judy', 10,  'Operations management veteran.');
+        COMMIT;
+
 
     -- ==========================================
-    -- PROCEDURE: PR_ADD_AND_ASSIGN_EMPLOYEE
+    -- CREATE PROCEDURE
+    -- Source: create_procedure.sql
     -- ==========================================
-    CREATE OR REPLACE PROCEDURE ORDS101.PR_ADD_AND_ASSIGN_EMPLOYEE (
-      p_emp_name  IN VARCHAR2,  -- Employee's name to be inserted
-      p_dept_code IN VARCHAR2,  -- Department code (case-insensitive search)
-      p_comments  IN CLOB       -- Additional textual comments about the employee
+    CREATE OR REPLACE EDITIONABLE PROCEDURE "PR_ADD_AND_ASSIGN_EMPLOYEE" (
+        p_emp_name  IN VARCHAR2,
+        p_dept_code IN VARCHAR2,
+        p_comments  IN CLOB
     ) AS
-      v_dept_id NUMBER;         -- Variable to store the department ID once found
+        l_dept_id department.dept_id%TYPE;
     BEGIN
+        SELECT dept_id
+            INTO l_dept_id
+            FROM department
+        WHERE UPPER(dept_code) = UPPER(p_dept_code);
 
-      SELECT dept_id INTO v_dept_id
-      FROM DEPARTMENT
-      WHERE UPPER(dept_code) = UPPER(p_dept_code);
-
-
-      INSERT INTO EMPLOYEE (emp_name, dept_id, comments)
-      VALUES (p_emp_name, v_dept_id, p_comments);
-
-
-    EXCEPTION
-
-      WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.put_line(
-          'Department code (DEPT_CODE) not found. Please use one of the following:' ||
-          ' EN003, FN002, HR001, IT007, LG006, LG009, MK005, OP010, SA004, SP008 '
+        INSERT INTO employee (
+            emp_name,
+            dept_id,
+            comments
+        )
+        VALUES (
+            p_emp_name,
+            l_dept_id,
+            p_comments
         );
 
-      WHEN OTHERS THEN
-        DBMS_OUTPUT.put_line('Error: ' || SQLERRM);
-
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            raise_application_error(
+                -20001,
+                'Department code not found. Valid values: ' ||
+                'EN003, FN002, HR001, IT007, LG006, LG009, ' ||
+                'MK005, OP010, SA004, SP008'
+            );
     END;
     /
-
-     </copy>
-
+    </copy>
     ``` 
 
-  </details>
-  <p></p>
+    </details>
+    </p>
 
-2. Click the Refresh button in the Navigator tab to refresh the Table objects. You should now see three new tables:  
+    ![Clicking execute script button](./images/11-build-out-schema.png " ")
+
+2. Click the Refresh button in the Navigator tab to refresh the Table objects. 
+
+    ![Refreshing the navigator tab](./images/12-refreshing-navigator-tab.png " ")
+
+    You'll see three new tables:  
 
     - `DEPARTMENT`
     - `EMPLOYEE`
     - `PROJECT`
-  
-3. Right-click on the `PROJECT` table to reveal various context menu options. Select the **Open** option. New table details slider will appear. 
 
-    ![Right click on open option in the context menu](./images-new/13-right-click-project-object-open.png " ")
+3. Right-click on the `PROJECT` table. Select the **Open** option. A details slider will appear. 
 
-4. Click the **Data** tab review the `PROJECT` table data. You'll notice just 10 entries; in the next lab you'll use the ORDS `BATCHLOAD` REST API to significantly add to the entries.
+    ![Right click on open option in the context menu](./images/13-right-click-project-object-open.png " ")
 
-   ![Click data tab to review table data](./images-new/14-data-menu-review-rows.png " ")
+4. Click the **Data** tab to review the `PROJECT` table data. Later on, you'll insert additional data using the ORDS `BATCHLOAD` REST API.
 
-5. Click the **Close** button, then right-click on the `PROJECT` table again and select **Edit**.
+    ![Click data tab to review table data](./images/14-data-menu-review-rows.png " ")
 
-   ![Click the edit option on the table context menu](./images-new/15-edit-option-review-object-characteristics.png " ")
+5. Click the **Close** button, right-click on the `PROJECT` table and select **Edit**.
 
-6. Click the `DDL` tab, to review the fully formatted, and syntactically correct DDL that was used to create this table. You may explore additional details of the table. When finished, click the **Close** button.
+    ![Click the edit option on the table context menu](./images/15-edit-option-review-object-characteristics.png " ")
 
-   ![Click the edit option on the table context menu](./images-new/16-reviewing-object-ddl.png " ")
+6. Click the `DDL` tab, to review the fully formatted, and syntactically correct DDL for this table. When finished, click the **Close** button.
+
+    ![Click the edit option on the table context menu](./images/16-reviewing-object-ddl.png " ")
+
+    ![Click the edit option on the table context menu](./images/16-reviewing-object-ddl.png " ")
 
 7. Next you'll use ORDS to AutoREST-enable the `PROJECT` table. 
 
 ## Task 4: AutoREST-enable a table
 
-1. Right-click on the `PROJECT` table, select **REST**, then **Enable**.
+1. Locate the `PROJECT` table. Right click, and Select **REST** > **Enable**.
 
-   ![Click the REST > Enable option](./images-new/17-rest-enabling-project-table.png " ")
+    ![Click the REST > Enable option](./images/17-rest-enabling-project-table.png " ")
 
-2. A new REST Enable Object slider will appear. ORDS automatically generates an API endpoint for you, along with the Roles and Privileges associated with this new resource. You can select a new **Object Alias**; but for this lab keep the default Alias. You can also toggle the **Show Code** radio button to reveal the PL/SQL procedure that ORDS will execute to REST-enable this table. Once satisfied, click **Enable**. Congratulations, you've just created your first ORDS API. 
+2. A new REST Enable Object slider will appear. ORDS automatically generates an API endpoint for you, along with the Roles and Privileges associated with this new resource. You can select a new **Object Alias**; but for this lab keep the default Alias. You can also toggle the **Show Code** radio button to reveal the PL/SQL procedure that ORDS will execute to REST-enable this table. Once satisfied, click **Enable**. 
 
-   ![The REST Enable Object slider](./images-new/18-rest-enable-table-dialogue.png " ")
+    ![The REST Enable Object slider](./images/18-rest-enable-table-dialogue.png " ")
 
-3. You'll notice a new plug icon on the table, this indicates that the database object is now REST-enabled (i.e., it is associated with a URI for HTTP/S requests). Right-click on the `PROJECT` table, scroll to **REST**, and select the new menu item: **cURL command**.
+3. You'll notice a new plug icon on the table, this indicates that the database object is now REST-enabled (i.e., it is associated with an URI for HTTP/S requests). 
 
-   ![Selecting cURL command on the context menu](./images-new/19-curl-command-option.png " ")
+4. Right-click on the `PROJECT` table, scroll to **REST**, and select the new **cURL command** menu item.
 
-4. You'll see the new ORDS API endpoints that were automatically created for you: `GET ALL`, `GET Single`, `POST`, `BATCH LOAD`, `PUT`, and `DELETE`. The definitions, and procedures for these methods/operations are all securly stored and executed on the Oracle database; nothing is saved in your application layer. Highlight or copy the URI for the `GET ALL` endpoint and open it in a new browser tab or window.
+    ![Selecting cURL command on the context menu](./images/19-curl-command-option.png " ")
 
-   ![Opening GET ALL in a new browser tab](./images-new/20-go-to-address-in-new-tab.png " ")
+5. ORDS API endpoints are automatically created for you: 
 
-5. You'll see the JSON payload that was requested as a result of visiting that GET ALL endpoint. By visiting that endpoint you've effectively just accomplised something similar to logging into the database and executing something similar to the following: 
+    - `GET ALL`
+    - `GET Single`
+    - `POST`
+    - `BATCH LOAD`
+    - `PUT`
+    - `DELETE`
+
+    ![Methods, operations focused view](./images/19-1-method-operation-focused-view.png " ")
+
+    > **NOTE:** The definitions, and procedures for these methods/operations are all securely stored and executed on the Oracle database; nothing is saved in your application layer. 
+  
+5. Highlight or copy the URL portion of the `GET ALL` curl command. Then, navigate to a browser, paste the URL, press enter, to see the results.
+
+    ![Opening GET ALL in a new browser tab](./images/20-go-to-address-in-new-tab.png " ")
+
+6. Notice the JSON payload of the `GET ALL` endpoint. The results on screen are analagous to executing something like this:
 
     ```sql 
-    SELECT *
-    FROM PROJECT
-    ORDER BY PROJ_ID
-    OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY;
+    SELECT * FROM PROJECT ORDER BY PROJ_ID OFFSET 0 ROWS FETCH NEXT 25 ROWS ONLY;
     ```
 
-   ![Using inspect in the browser's developer tools](./images-new/21-inspect-browser-network-tab.png " ")
+    ![Using inspect in the browser's developer tools](./images/21-inspect-browser-network-tab.png " ")
 
-6. In fact, you've accomplished a great deal more than that. From your browser's Developer/Inspect tools, navigate to the Network tab, and adjust the page's response to view the Object Tree. In addition to `FETCHING` the first 25 rows, an ORDS AutoREST-enabled endpoint also includes links for each of the results (for an indiviual row), the total `count` (`10`) of the results of the payload (`items:Array`), the `limit` used (`25` is the ORDS default), the `offset` (`0`), and two more special properties: `hasMore` and `links:Array`. 
+7. Open your brower's Developer/Inspect tools, navigate to the Network tab, and adjust the page's response to view the Object Tree. In addition to `FETCHING` the first 25 rows, an ORDS AutoREST-enabled endpoint also includes links for each of the results (for an indiviual row), the total `count` (`10`) of the results of the payload (`items:Array`), the `limit` used (`25` is the ORDS default), the `offset` (`0`), and two more special properties: `hasMore` and `links:Array`. 
 
-   The `hasMore: Boolean` informs a client if more results exist past the initial 25; allowing you to programmatically scale the results using this condition plus the `limit` and `offset` for finer grain control and easier pagination. 
+    - `hasMore: Boolean` - informs a client if more results exist past the initial 25; allowing you to programmatically scale the results using this condition plus `limit` and `offset` for finer grain control and easier pagination.
+    - `links:Array` - provides self-describing and self-referring links
+        - `first` points to the first set of results (1-25)
+        - larger results sets would include `next` and `previous` links too
 
-   The `links:Array` is a powerful property. The links therein are self-describing and self-referring; like the `first` link, which points to the first set of results (1-25). And in larger results sets you'd find `next` and `previous` links too. 
+    ![Reviewing the Response Object Tree](./images/22-object-tree-view.png " ")
 
-   ![Reviewing the Response Object Tree](./images-new/22-object-tree-view.png " ")
+## Task 5: Using the ORDS BATCHLOAD endpoint
 
-7. Once you've finished exploring, close out this tab, and return the the SQL Worksheet. 
+1. Return to the SQL Worksheet. The **cURL for the table PROJECT** slider should still be visible, if not right click on the `PROJECT` table, then select **REST** > **cURL command**.
 
-8. The **cURL for the table PROJECT** slider should still be visible, if not review the instructions in Step 3 above. Click the `BATCH LOAD` tab, choose the appropriate shell environment, and copy the `BATCH LOAD` cURL command to your clipboard. 
+2. Click the `BATCHLOAD` tab, choose the appropriate shell environment, and copy the `BATCHLOAD` cURL command to your clipboard. 
 
-   ![Copying the BATCHLOAD URI](./images-new/23-prepare-for-batchload.png " ")
+    ![Choosing the correct Command Prompt command](./images/23-1-command-prompt-command-batchload-command.png " ")
 
-9. Next you'll use this `BATCH LOAD` endpoint to perform a bulk insert on the `PROJECT` table via an HTTP request. 
+    ![Choosing the correct Power Shell command](./images/23-2-powershell-command-batchload-command.png " ")
 
-## Task 5: Using the ORDS BATCH LOAD endpoint
+    ![Choosing the correct Bash command](./images/23-3-bash-command-batchload-command.png " ")
 
-1. This `BATCH LOAD` example uses cURL to simulate using a client application for executing and recieving HTTP requests and responses. In a text editor, paste the example `BATCHLOAD` cURL command you copied from the previous lab. 
+    ![Copying the BATCHLOAD URI](./images/23-4-copying-batchload-command.png " ")
 
-   ![Copying the BATCHLOAD URI](./images-new/23-prepare-for-batchload.png " ")
+3. This `BATCHLOAD` example uses the cURL to simulate a client application executing/recieving HTTP requests/responses. In a text editor, paste the example `BATCHLOAD` cURL command you copied from the previous lab. 
 
-   ![Unedited batchload curl command](./images-new/24-unedited-batchload-curl-command.png " ")
+5. Retrieve the sample payload via [this link](https://objectstorage.us-ashburn-1.oraclecloud.com/p/4Au3jJ-t8Wtw3LWyYsDMqQk2FdlXDvXCb1MYRS0J6P4QS-GCrv2YNOolWdtFMLZq/n/c4u04/b/livelabsfiles/o/developer-library/batchload_directory.zip). Unzip the `.zip` file, if this did not occur automatically.
 
-2. Retrieve the sample payload via [this link](https://c4u04.objectstorage.us-ashburn-1.oci.customer-oci.com/p/EcTjWk2IuZPZeNnD_fYMcgUhdNDIDA6rt9gaFj_WZMiL7VvxPBNMY60837hu5hga/n/c4u04/b/livelabsfiles/o/developer-library/batchload_directory.zip) that you'll use for testing this `BATCH LOAD` endpoint. Unzip the .zip file if this did not occur automatically.
+6. Once downloaded, copy the filepath details to use in the `--data-binary` option of the cURL command. In this example, the .csv file is located at: `/Users/me/Downloads/project_batchload.csv`. From your text editor *replace the URL seen below with the one copied from your own `BATCHLOAD` cURL command.* *Also, make sure you have the correct file path to the `project_batchload.csv` file.*
 
-3. Once downloaded, copy the filepath details to use in the `--data-binary` option of the cURL command. In this example, the .csv file is located at: `/Users/me/Downloads/project_batchload.csv`.
+    ![Before and after, complete BATCHLOAD command](./images/24-before-after-complete-batchload-command.png " ") 
 
- > **IMPORTANT:** Your Command Prompt or Power Shell sample cURL Command may default to `-d` `--data` instead of `--data-binary`. Windows users should use a cURL command as seen in this example:
+ <details>
+  <summary><strong>Learn about the available <code>BATCHLOAD</code> parameters</strong></summary>
+    <p></p>
 
-  ```shell
-  <copy>
-  curl -v -X POST  ^
-  -H "Content-Type: text/csv" ^
-  "https://my-ocid-db-name.adb.my-region-1.oraclecloudapps.com/ords/ords101/project/batchload" ^
-  --data-binary "@\Users\me\Downloads\project_batchload.csv"
-  </copy>
-  ```
+    You may optionally pass reserved `BATCHLOAD` URL query parameters in your `POST` request. Available parameters include: 
 
-4. In your text editor replace `<CONTENT_TYPE>` with `text/csv` and `--data-binary @<FILE_NAME>` with your own file path. Optionally you may include other cURL options like those in the example. 
+    | Parameter | Description | URL example | Details / unencoded value |
+    |---|---|---|---|
+    | `batchesPerCommit` | Commit frequency after batches are sent to the database. Default: every 10 batches. `0` defers commit until the end of the load. Integer. | `?batchesPerCommit=10` | `10` is the literal integer value. |
+    | `batchRows` | Number of rows in each batch sent to the database. Default: 50. Integer. | `?batchRows=1000` | `1000` is the literal integer value. |
+    | `dateFormat` | Format mask used to convert input values for `DATE` columns. | `?dateFormat=YYYY-MM-DD` | Unencoded value: `YYYY-MM-DD`. |
+    | `delimiter` | Field delimiter for the input file. Default: comma (`,`). | `?delimiter=%2C`<br>`?delimiter=%7C` | `%2C` = `,` (comma); `%7C` = `|` (pipe). |
+    | `enclosures` | Character(s) enclosing each field. Default: double quote (`"`). One character is used for both sides; two characters specify left then right enclosures. | `?enclosures=%22`<br>`?enclosures=%27%22` | `%22` = `"`; both left and right enclosures are double quotes.<br>`%27%22` = `'"`; left is `'`, right is `"`. |
+    | `embeddedRightDouble` | Controls handling of two consecutive right-enclosure characters inside an enclosed field. `true` treats them as one literal enclosure; `false` treats them as an error. | `?embeddedRightDouble=true` | `true` is the literal Boolean value. |
+    | `encoding` | Character encoding of the input file. Default: `UTF8`. | `?encoding=UTF-8` | Unencoded value: `UTF-8`. |
+    | `errors` | Maximum row errors allowed before terminating the load, subject to the service-level `db.batchload.errorsMax` limit. `0` allows no errors; `UNLIMITED` / `-1` allows errors up to the service limit. | `?errors=0`<br>`?errors=UNLIMITED` | `0` is the literal integer value; `UNLIMITED` is the literal keyword. |
+    | `lineEnd` | Input record terminator. Omit it when the file uses standard `\\r`, `\\r\\n`, or `\\n` endings. | `?lineEnd=%0A`<br>`?lineEnd=%0D%0A` | `%0A` = line feed (`LF`, `\\n`).<br>`%0D%0A` = carriage return + line feed (`CRLF`, `\\r\\n`). |
+    | `lineMax` | Maximum line length used to recognize rows in the stream. Default: unlimited. | `?lineMax=4096`<br>`?lineMax=UNLIMITED` | `4096` is a literal integer; `UNLIMITED` is the literal keyword. |
+    | `locale` | Locale used for locale-sensitive loader parsing and formatting. | `?locale=en-US` | Unencoded value: `en-US`. |
+    | `responseEncoding` | Encoding of the loader response stream. | `?responseEncoding=UTF-8` | Unencoded value: `UTF-8`. |
+    | `responseFormat` | Format of loader messages and bad-data output. Valid values: `RAW`, `SQL`. Default: `RAW`. | `?responseFormat=RAW` | `RAW` is the literal keyword. |
+    | `timestampFormat` | Format mask used to convert input values for `TIMESTAMP` columns. | `?timestampFormat=YYYY-MM-DD%22T%22HH24%3AMI%3ASS` | Unencoded value: `YYYY-MM-DD"T"HH24:MI:SS`. `%22` = `"`, `%3A` = `:`. |
+    | `timestampTZFormat` | Format mask used to convert input values for `TIMESTAMP WITH TIME ZONE` columns. | `?timestampTZFormat=YYYY-MM-DD%22T%22HH24%3AMI%3ASSTZH%3ATZM` | Unencoded value: `YYYY-MM-DD"T"HH24:MI:SSTZH:TZM`. `%22` = `"`, `%3A` = `:`. |
+    | `truncate` | Whether to delete existing table rows before loading. `false` (default) retains them; `true` uses `DELETE`; `truncate` uses `TRUNCATE TABLE`. | `?truncate=true`<br>`?truncate=truncate` | `true` is the literal Boolean value; `truncate` is the literal keyword. |
 
-   ![Edited batchload curl command](./images-new/25-batchload-curl-command-with-edits.png " ")
+    **A combined example**
 
-   > **NOTE:** Your `BATCHLOAD` URI will differ as well. File paths for macOS/Linux and Windows differ; double check your complete cURL command.
+    ```sh
+    /ords/[schema]/employees/batchload?truncate=true&batchRows=1000&batchesPerCommit=10&errors=0&dateFormat=YYYY-MM-DD&encoding=UTF-8&delimiter=%2C&lineEnd=%0A&enclosures=%22&embeddedRightDouble=true
+    ```
 
-5. Execute the `BATCH LOAD` request. After a few moments the results of the operation will appear in your terminal.
+    > **Reminder:** Percent-encode URL-reserved characters; double quote &rarr; `%22`, comma &rarr; `%2C`, pipe &rarr; `%7C`, line feed &rarr; `%0A`, carriage return/line feed (CRLF) &rarr; `%0D%0A`, etc. 
+    
+ </details>
+ <p></p>
 
-   ![Unedited batchload curl command](./images-new/26-completed-batchload-command.png " ")
+7. **Double check**. In your text editor replace `<CONTENT_TYPE>` with `text/csv` and `--data-binary @<FILE_NAME>` with your own file path. Optionally you may include other cURL options like those in the table above. 
 
-6. You've just inserted an additional 5,000,000 records into the Project table using this ORDS `BATCH LOAD` API! Optionally, navigate to the SQL Worksheet and execute a `Select count(*) from PROJECT` query to review the new total entries in the `PROJECT` table. 
+    ![Edited batchload curl command](./images/25-batchload-curl-command-with-edits.png " ")
 
-   ![Select count from PROJECT table](./images-new//27-count-from-project-table.png " ")
+    > **NOTE:** Your `BATCHLOAD` URI will differ as well. File paths for macOS/Linux and Windows differ; double check your complete cURL command.
 
-7. You've just performed a massive insert using a single AutoREST-enabled endpoint.   In the next lab you'll see how easy it is to take your existing PL/SQL and create your own custom ORDS APIs.
+ <details>
+  <summary><strong>Optional Progress Meter with cURL</strong></summary>
+
+    Optionally, you can output a progress meter for the `BATCHLOAD` operation. Assuming you have created a `/tmp` directory:
+
+      ```sh
+      <copy>
+      mkdir tmp && cd tmp
+      </copy>
+      ```
+
+    Use a cURL command like this: 
+
+      ```sh
+      <copy>
+      curl --location -o ./output.txt -# --request POST \
+      --header "Content-Type: text/csv" \
+      --data-binary @[your filepath to]/project_batchload.csv \
+      'https://[your ADB-S].oraclecloudapps.com/ords/[your schema]/project/batchload' \
+      && cat ./output.txt && rm ./output.txt
+      </copy> 
+      ```
+
+    ![Optional progress bar, mid loading.](./images/optional-progress-bar-mid-load.png " ")
+
+    ![Optional progress bar, completed.](./images/optional-progress-bar-complete.png " ")
+
+ </details>
+      <p></p>
+
+5. Execute the `BATCHLOAD` request. After a few moments the results of the operation will appear in your terminal.
+
+    ![Completed BATCHLOAD operation](./images/26-completed-batchload-command.png " ")
+
+6. You've just inserted an additional 2,500,000 records into the Project table using this ORDS `BATCHLOAD` API. Execute a `Select count(*) from PROJECT;` query to review the new total entries in the `PROJECT` table. 
+
+    ```sql
+    <copy>
+    Select count(*) from PROJECT;
+    </copy>
+    ```
+
+    ![Select count from PROJECT table](./images/27-count-from-project-table.png " ")
+
+7. In the next lab you'll see how easy it is to take your existing PL/SQL and create your own custom ORDS APIs.
 
 You may now [proceed to the next lab](#next).
 
@@ -314,8 +468,8 @@ You may now [proceed to the next lab](#next).
 ### Author
 
 - Jeff "el jefe" Smith, Distinguished Product Manager
-- Chris Hoina, Senior Product Manager
+- Chris Hoina, Lead Principal Product Manager
 
 ### Last Updated By/Date
 
-- Chris Hoina, October 2025
+- Chris Hoina, October 2026
